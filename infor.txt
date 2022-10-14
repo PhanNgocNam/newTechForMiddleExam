@@ -37,12 +37,12 @@ const converFormToJson = multer({
 });
 
 const s3 = new AWS.S3({
-    accessKeyId: 'AKIAQUKTARAOTEG6LHVS',
-    secretAccessKey: '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'
+    accessKeyId: 'AKIAWLCLEXTXCP3OW2ZX',
+    secretAccessKey: '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'
 }) ==> Thêm vào sau Table Name
 
 
-const CLOUD_FRONT_URL = 'http://d2bv9wfx1q6mdi.cloudfront.net/';
+const CLOUD_FRONT_URL = 'https://d30fkfafv9elhz.cloudfront.net/';
 
 app.post('/', convertFormToJson.single('image'), (req, res) => {
     const { pr_id, pr_name, pr_quantity } = req.body;
