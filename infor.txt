@@ -6,7 +6,7 @@ AWS.config.update({
 
 ID for IAM User : 436096777454
 
-S3
+==================S3===============================================================================================
 
 #step 1: Thêm <input type="file" name="image"> vào file index.ejs
 #step 2: Thêm 1 <td><img width="40px" src="<%=data[i].image_url%>"></td> vào table
