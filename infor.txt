@@ -1,0 +1,7 @@
+AWS.config.update({
+  region: 'ap-southeast-1',
+  accessKeyId: 'AKIAWLCLEXTXCP3OW2ZX',
+  secretAccessKey : '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'
+})
+
+ID for IAM User : 436096777454
