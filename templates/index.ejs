@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="index.css" />
+  <title>Document</title>
+</head>
+
+<body>
+  <form action="/" method="post" enctype="multipart/form-data">
+    <input name="id" type="text" placeholder="Enter Product's ID : " />
+    <input name="name" type="text" placeholder="Enter Product's Name : " />
+    <input name="quantity" type="number" placeholder="Enter Quantity : " >
+    <input class="submit" type="submit" value="Submit" />
+  </form>
+
+  <table class="table" border="1">
+    <tr>
+      <th>ID</th>
+      <th>Product's name</th>
+      <th>Quantity</th>
+      <th>Actions</th>
+    </tr>
+    <% for(let i=0; i < data.length; i ++) { %>
+      <tr>
+        <td>
+          <%=data[i].id %>
+        </td>
+        <td>
+          <%=data[i].name %>
+        </td>
+        <td>
+          <%= data[i].quantity  %> 
+        </td>
+
+        <td>
+          <form action="/delete" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="<%=data[i].id %>" />
+            <input type="submit" value="Delete" />
+          </form>
+        </td>
+      </tr>
+      <% } %>
+  </table>
+
+</body>
+
+</html>
