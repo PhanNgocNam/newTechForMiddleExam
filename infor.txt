@@ -5,3 +5,83 @@ AWS.config.update({
 })
 
 ID for IAM User : 436096777454
+
+S3
+
+#step 1: Thêm <input type="file" name="image"> vào file index.ejs
+#step 2: Thêm 1 <td><img width="40px" src="<%=data[i].image_url%>"></td> vào table
+#step 3: Thêm const path = require('path'); const { v4: uuid } = require("uuid"); => Server.js
+#step 4: Thêm
+
+const stogare = multer.memoryStorage({
+    destination(req, file, callback) {
+        callback(null, '');
+    },
+})
+
+function checkImage(file, cb) {
+    const fileType = /jpeg|jpg|png|gif/;
+    const extname = fileType.test(path.extname(file.originalname).toLowerCase());
+    const minetype = fileType.test(file.mimetype);
+    if (extname && minetype)
+        return cb(null, true);
+    return cb("Erorr: Image only");
+}
+
+const converFormToJson = multer({
+    stogare,
+    limits: { fileSize: 200000 },
+    fileFilter(req, file, cb) {
+        checkImage(file, cb);
+    }
+});
+
+const s3 = new AWS.S3({
+    accessKeyId: 'AKIAQUKTARAOTEG6LHVS',
+    secretAccessKey: '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'
+}) ==> Thêm vào sau Table Name
+
+
+const CLOUD_FRONT_URL = 'http://d2bv9wfx1q6mdi.cloudfront.net/';
+
+app.post('/', convertFormToJson.single('image'), (req, res) => {
+    const { pr_id, pr_name, pr_quantity } = req.body;
+    const image = req.file.originalname.split(".");
+    const fileType = image[image.length - 1];
+    const filePath = `${uuid() + Date.now().toString}.${fileType}`;
+    const params = {
+        Bucket: 's3-storage-middleexam',
+        Key: filePath,
+        Body: req.file.buffer
+    }
+    // const params = {
+    //     TableName: tableName,
+    //     Item: {
+    //         maSP, tenSP, soLuong
+    //     }
+    // }
+    s3.upload(params, (err, data) => {
+        if (err) {
+            return res.send('Internal server error');
+        } else {
+            const newItem = {
+                TableName: tableName,
+                Item: {
+                    'pr_id': pr_id,
+                    'pr_name': pr_name,
+                    'pr_quantity': pr_quantity,
+                    'image_url': `${CLOUD_FRONT_URL}${filePath}`
+                }
+            }
+
+            docClient.put(newItem, (err, data) => {
+                if (err) {
+                    return res.send('Internal server error');
+                } else {
+                    return res.redirect('/');
+                }
+            });
+        }
+        // console.log(req.body);
+    })
+})
